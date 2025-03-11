@@ -1,23 +1,32 @@
-import image from "../templates/favorite-icon-filled.png";
+import Header from './components/Header.js';
+import PlusButton from './components/button/PlusButton.js';
+import RestaurantAddModal from './components/modal/RestaurantAddModal.js';
+import RestaurantList from './components/restaurant/RestaurantList.js';
+import { $ } from './util/selector.js';
 
-console.log("npm run dev 명령어를 통해 점심 뭐 먹지 미션을 시작하세요");
-console.log(
-  "%c ___       ___  ___  ________   ________  ___  ___     \n" +
-    "|\\  \\     |\\  \\|\\  \\|\\   ___  \\|\\   ____\\|\\  \\|\\  \\    \n" +
-    "\\ \\  \\    \\ \\  \\\\\\  \\ \\  \\\\ \\  \\ \\  \\___|\\ \\  \\\\\\  \\   \n" +
-    " \\ \\  \\    \\ \\  \\\\\\  \\ \\  \\\\ \\  \\ \\  \\    \\ \\   __  \\  \n" +
-    "  \\ \\  \\____\\ \\  \\\\\\  \\ \\  \\\\ \\  \\ \\  \\____\\ \\  \\ \\  \\ \n" +
-    "   \\ \\_______\\ \\_______\\ \\__\\\\ \\__\\ \\_______\\ \\__\\ \\__\\\n" +
-    "    \\|_______|\\|_______|\\|__| \\|__|\\|_______|\\|__|\\|__|",
-  "color: #d81b60; font-size: 14px; font-weight: bold;"
-);
-
-addEventListener("load", () => {
-  const app = document.querySelector("#app");
-  const buttonImage = document.createElement("img");
-  buttonImage.src = image;
-
-  if (app) {
-    app.appendChild(buttonImage);
-  }
+addEventListener('load', () => {
+  renderHeader();
+  renderRestaurantList();
+  renderModal();
 });
+
+const renderHeader = () => {
+  const body = $('body');
+  const header = Header({ title: '점심 뭐 먹지', right: PlusButton() });
+  body.prepend(header);
+};
+
+const renderRestaurantList = () => {
+  const main = $('main');
+  main.appendChild(RestaurantList());
+};
+
+const renderModal = () => {
+  const main = $('main');
+  const modal = RestaurantAddModal();
+
+  main.appendChild(modal.modal);
+
+  const plusButton = $('.gnb__button');
+  plusButton.addEventListener('click', () => modal.open());
+};
