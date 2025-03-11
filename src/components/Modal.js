@@ -4,11 +4,11 @@ import { lockScroll, unlockScroll } from '../util/scroll.js';
 function Modal({ content }) {
   const modal = createDOMElement({
     tag: 'div',
-    class: 'modal',
+    className: 'modal',
     children: [
       createDOMElement({
         tag: 'div',
-        class: 'modal-backdrop'
+        className: 'modal-backdrop'
       }),
       content
     ]

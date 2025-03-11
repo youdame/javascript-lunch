@@ -58,7 +58,7 @@ function RestaurantAddModalForm() {
       }),
       createDOMElement({
         tag: 'div',
-        class: 'button-container',
+        className: 'button-container',
         children: [CancelButton, AddButton]
       })
     ]

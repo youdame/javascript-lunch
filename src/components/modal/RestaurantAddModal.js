@@ -6,11 +6,11 @@ function RestaurantAddModal() {
   return Modal({
     content: createDOMElement({
       tag: 'div',
-      class: 'modal-container',
+      className: 'modal-container',
       children: [
         createDOMElement({
           tag: 'h2',
-          class: ['modal-title', 'text-title'],
+          className: 'modal-title text-title',
           textContent: '새로운 음식점'
         }),
         RestaurantAddModalForm()

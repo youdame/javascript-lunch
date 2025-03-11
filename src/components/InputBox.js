@@ -3,7 +3,7 @@ import createDOMElement from '../util/createDomElement.js';
 function Root({ label, input, caption }) {
   return createDOMElement({
     tag: 'div',
-    class: ['form-item', 'form-item--required'],
+    className: 'form-item form-item--required',
     children: [label, input, caption].filter(Boolean)
   });
 }
@@ -12,7 +12,7 @@ function Label({ text, className, ...attribute }) {
   return createDOMElement({
     tag: 'label',
     textContent: text,
-    class: [className, 'text-caption'].filter(Boolean),
+    className: `${className} text-caption`,
     ...attribute
   });
 }
@@ -48,9 +48,9 @@ function TextArea({ ...attribute }) {
 function Caption({ text }) {
   return createDOMElement({
     tag: 'span',
-    class: ['help-text', 'text-caption'],
+    className: 'help-text text-caption',
     textContent: text
   });
 }
 
-export const InputBox = { Root, Label, Select, Input, Select, TextArea, Caption };
+export const InputBox = { Root, Label, Select, Input, TextArea, Caption };

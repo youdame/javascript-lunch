@@ -6,17 +6,6 @@ const createDOMElement = ({ tag, children, ...props }) => {
   const element = document.createElement(tag);
 
   Object.entries(props).forEach(([key, value]) => {
-    if (key === 'class') {
-      if (Array.isArray(value)) {
-        value.forEach((className) => {
-          element.classList.add(className);
-        });
-      } else {
-        element.className = value;
-      }
-      return;
-    }
-
     element[key] = value;
   });
 

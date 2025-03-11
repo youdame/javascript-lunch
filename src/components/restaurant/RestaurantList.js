@@ -6,11 +6,11 @@ import RestaurantItem from './RestaurantItem.js';
 function RestaurantList() {
   return createDOMElement({
     tag: 'section',
-    class: 'restaurant-list-container',
+    className: 'restaurant-list-container',
     children: [
       createDOMElement({
         tag: 'ul',
-        class: 'restaurant-list',
+        className: 'restaurant-list',
         children: restaurants.map((restaurant) =>
           RestaurantItem({ ...restaurant, icon: RestaurantIcon(restaurant.icon) })
         )

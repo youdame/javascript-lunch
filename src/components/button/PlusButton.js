@@ -4,7 +4,7 @@ function PlusButton() {
   return createDOMElement({
     tag: 'button',
     type: 'button',
-    class: 'gnb__button',
+    className: 'gnb__button',
     'aria-label': '음식점 추가',
     children: [
       createDOMElement({
