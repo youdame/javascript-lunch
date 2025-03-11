@@ -14,6 +14,7 @@ const createDOMElement = ({ tag, children, ...props }) => {
       } else {
         element.className = value;
       }
+      return;
     }
 
     element[key] = value;
