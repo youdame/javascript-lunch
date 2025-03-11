@@ -1,4 +1,4 @@
-import { CATEGORY_OPTIONS, DISTANCE_OPTIONS } from '../../constant/selectOptions.js';
+import { CATEGORY_OPTIONS, DISTANCE_OPTIONS } from './constant.js';
 import createDOMElement from '../../util/createDomElement.js';
 import ActionButton from '../button/ActionButton.js';
 import CTAButton from '../button/CTAButton.js';
