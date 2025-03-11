@@ -3,7 +3,8 @@ describe('레스토랑 추가 테스트 ㅎ ㅎ', () => {
     cy.visit('http://localhost:5173');
     cy.get('.gnb__button').click();
 
-    cy.get('#category').select(1);
+    cy.get('#category').select(1, { force: true });
+
     cy.get('#name').type('재영이');
     cy.get('#distance').select(1);
     cy.get('#description').type('재영이가 좋아하는 재영이 맛집');
