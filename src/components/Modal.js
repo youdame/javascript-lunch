@@ -1,40 +1,47 @@
 import createDOMElement from '../util/createDomElement.js';
 import { lockScroll, unlockScroll } from '../util/scroll.js';
 
-function Modal({ content }) {
-  const modal = createDOMElement({
-    tag: 'div',
-    className: 'modal',
-    children: [
-      createDOMElement({
-        tag: 'div',
-        className: 'modal-backdrop'
-      }),
-      content
-    ]
-  });
+class Modal {
+  constructor({ content }) {
+    this.modal = createDOMElement({
+      tag: 'div',
+      className: 'modal',
+      children: [
+        createDOMElement({
+          tag: 'div',
+          className: 'modal-backdrop',
+          onclick: () => this.close()
+        }),
+        content
+      ]
+    });
 
-  function open() {
-    modal.classList.add('modal--open');
+    document.body.appendChild(this.modal);
+    this.handleEscKey = this.#handleEscKey.bind(this);
+  }
+
+  open() {
+    this.modal.classList.add('modal--open');
     lockScroll();
-    document.addEventListener('keydown', handleEscKey);
+    document.addEventListener('keydown', this.#handleEscKey);
   }
 
-  function close() {
-    modal.classList.remove('modal--open');
+  close() {
+    this.modal.classList.remove('modal--open');
     unlockScroll();
-    document.removeEventListener('keydown', handleEscKey);
+    document.removeEventListener('keydown', this.#handleEscKey);
   }
 
-  function handleEscKey(event) {
+  #handleEscKey(event) {
     if (event.key === 'Escape') {
-      close();
+      this.close();
     }
   }
 
-  modal.querySelector('.modal-backdrop').addEventListener('click', close);
-
-  return { modal, open, close };
+  destroy() {
+    this.close();
+    this.modal.remove();
+  }
 }
 
 export default Modal;

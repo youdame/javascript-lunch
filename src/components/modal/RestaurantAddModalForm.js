@@ -4,12 +4,13 @@ import ActionButton from '../button/ActionButton.js';
 import CTAButton from '../button/CTAButton.js';
 import { InputBox } from '../InputBox.js';
 
-function RestaurantAddModalForm() {
-  const CancelButton = ActionButton({ text: '취소하기', type: 'button' });
+function RestaurantAddModalForm({ onClose, onSubmit }) {
+  const CancelButton = ActionButton({ text: '취소하기', type: 'button', onClick: onClose });
   const AddButton = CTAButton({ text: '추가하기', type: 'submit' });
 
   return createDOMElement({
     tag: 'form',
+    onSubmit,
     children: [
       InputBox.Root({
         label: InputBox.Label({ text: '카테고리', for: 'category', className: 'label-required' }),
