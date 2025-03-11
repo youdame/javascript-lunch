@@ -1,4 +1,5 @@
 import createDOMElement from '../util/createDomElement.js';
+import { lockScroll, unlockScroll } from '../util/scroll.js';
 
 function Modal({ content }) {
   const modal = createDOMElement({
@@ -15,13 +16,13 @@ function Modal({ content }) {
 
   function open() {
     modal.classList.add('modal--open');
-    document.body.style.overflow = 'hidden';
+    lockScroll();
     document.addEventListener('keydown', handleEscKey);
   }
 
   function close() {
     modal.classList.remove('modal--open');
-    document.body.style.overflow = '';
+    unlockScroll();
     document.removeEventListener('keydown', handleEscKey);
   }
 
