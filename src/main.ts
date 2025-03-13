@@ -5,9 +5,11 @@ import RestaurantIcon from './components/restaurant/RestaurantIcon.js';
 import RestaurantItem from './components/restaurant/RestaurantItem.js';
 import RestaurantList from './components/restaurant/RestaurantList.js';
 import { $ } from './util/selector.js';
+import DropdownContainer, { filterAndSortRestaurants } from './components/Dropdown/DropdownContainer.js';
 
 addEventListener('load', () => {
   renderHeader();
+  renderFilter();
   renderRestaurantList();
   renderModal();
 });
@@ -20,7 +22,8 @@ const renderHeader = () => {
 
 const renderRestaurantList = () => {
   const main = $('main');
-  main.appendChild(RestaurantList());
+
+  main.appendChild(RestaurantList({ restaurants: filterAndSortRestaurants() }));
 };
 
 const renderModal = () => {
@@ -30,11 +33,8 @@ const renderModal = () => {
     e.preventDefault();
 
     const form = e.target as HTMLFormElement;
-
     const formData = new FormData(form);
-
     const { name, distance, description, category } = Object.fromEntries(formData.entries());
-
     const item = RestaurantItem({
       name,
       distance,
@@ -46,11 +46,15 @@ const renderModal = () => {
 
     form.reset();
   };
-
   const modal = RestaurantAddModal({ onSubmit: handleSubmit });
 
   main.appendChild(modal.modal);
 
   const plusButton = $('.gnb__button');
   plusButton.addEventListener('click', () => modal.open());
+};
+
+const renderFilter = (): void => {
+  const main = $('main');
+  main.prepend(DropdownContainer());
 };

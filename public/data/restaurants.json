@@ -6,7 +6,8 @@
     "icon": {
       "src": "images/category-korean.png",
       "alt": "korean"
-    }
+    },
+    "category": "한식"
   },
   {
     "name": "친친",
@@ -15,7 +16,8 @@
     "icon": {
       "src": "images/category-chinese.png",
       "alt": "chinese"
-    }
+    },
+    "category": "중식"
   },
   {
     "name": "잇쇼우",
@@ -24,7 +26,8 @@
     "icon": {
       "src": "images/category-japanese.png",
       "alt": "japanese"
-    }
+    },
+    "category": "일식"
   },
   {
     "name": "이태리키친",
@@ -33,7 +36,8 @@
     "icon": {
       "src": "images/category-western.png",
       "alt": "western"
-    }
+    },
+    "category": "양식"
   },
   {
     "name": "호아빈 삼성점",
@@ -42,7 +46,8 @@
     "icon": {
       "src": "images/category-asian.png",
       "alt": "asian"
-    }
+    },
+    "category": "아시안"
   },
   {
     "name": "도스타코스 선릉점",
@@ -51,6 +56,7 @@
     "icon": {
       "src": "images/category-etc.png",
       "alt": "etc"
-    }
+    },
+    "category": "기타"
   }
 ]

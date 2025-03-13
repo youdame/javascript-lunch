@@ -1,9 +1,8 @@
-import restaurants from '../../../public/data/restaurants.json';
 import createDOMElement from '../../util/createDomElement.js';
 import RestaurantIcon from './RestaurantIcon.js';
 import RestaurantItem from './RestaurantItem.js';
 
-function RestaurantList() {
+function RestaurantList({ restaurants }) {
   return createDOMElement({
     tag: 'section',
     className: 'restaurant-list-container',
