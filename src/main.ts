@@ -5,11 +5,14 @@ import RestaurantIcon from './components/restaurant/RestaurantIcon.js';
 import RestaurantItem from './components/restaurant/RestaurantItem.js';
 import RestaurantList from './components/restaurant/RestaurantList.js';
 import { $ } from './util/selector.js';
-import DropdownContainer, { filterAndSortRestaurants } from './components/Dropdown/DropdownContainer.js';
+import DropdownContainer, { filterAndSortRestaurants } from './components/dropdown/DropdownContainer.js';
+import Tab from './components/tab/Tab.js';
 
 addEventListener('load', () => {
   renderHeader();
+  renderTab();
   renderFilter();
+
   renderRestaurantList();
   renderModal();
 });
@@ -20,10 +23,20 @@ const renderHeader = () => {
   body.prepend(header);
 };
 
+const renderTab = () => {
+  const main = $('main');
+
+  main.prepend(Tab());
+};
 const renderRestaurantList = () => {
   const main = $('main');
 
   main.appendChild(RestaurantList({ restaurants: filterAndSortRestaurants() }));
+};
+
+const renderFilter = (): void => {
+  const main = $('main');
+  main.appendChild(DropdownContainer());
 };
 
 const renderModal = () => {
@@ -52,9 +65,4 @@ const renderModal = () => {
 
   const plusButton = $('.gnb__button');
   plusButton.addEventListener('click', () => modal.open());
-};
-
-const renderFilter = (): void => {
-  const main = $('main');
-  main.prepend(DropdownContainer());
 };
