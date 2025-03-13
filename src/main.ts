@@ -1,6 +1,8 @@
 import Header from './components/Header.js';
 import PlusButton from './components/button/PlusButton.js';
 import RestaurantAddModal from './components/modal/RestaurantAddModal.js';
+import RestaurantIcon from './components/restaurant/RestaurantIcon.js';
+import RestaurantItem from './components/restaurant/RestaurantItem.js';
 import RestaurantList from './components/restaurant/RestaurantList.js';
 import { $ } from './util/selector.js';
 
@@ -23,7 +25,29 @@ const renderRestaurantList = () => {
 
 const renderModal = () => {
   const main = $('main');
-  const modal = RestaurantAddModal();
+
+  const handleSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+
+    const form = e.target as HTMLFormElement;
+
+    const formData = new FormData(form);
+
+    const { name, distance, description, category } = Object.fromEntries(formData.entries());
+
+    const item = RestaurantItem({
+      name,
+      distance,
+      description,
+      icon: RestaurantIcon({ src: `images/category-${category}.png`, alt: category })
+    });
+
+    document.querySelector('.restaurant-list')?.appendChild(item);
+
+    form.reset();
+  };
+
+  const modal = RestaurantAddModal({ onSubmit: handleSubmit });
 
   main.appendChild(modal.modal);
 
