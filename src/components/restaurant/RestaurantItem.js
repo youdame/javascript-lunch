@@ -1,6 +1,7 @@
 import createDOMElement from '../../util/createDomElement.js';
+import DetailModal from '../modal/DetailModal.js';
 
-function RestaurantItem({ name, distance, description, icon }) {
+function RestaurantItem({ name, distance, description, icon, link, category }) {
   return createDOMElement({
     tag: 'li',
     className: 'restaurant',
@@ -31,7 +32,11 @@ function RestaurantItem({ name, distance, description, icon }) {
           })
         ]
       })
-    ]
+    ],
+    onClick: () => {
+      const modal = DetailModal({ name, distance, description, link, icon });
+      modal.open();
+    }
   });
 }
 

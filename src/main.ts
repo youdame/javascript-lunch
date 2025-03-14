@@ -47,12 +47,14 @@ const renderModal = () => {
 
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    const { name, distance, description, category } = Object.fromEntries(formData.entries());
+    const { name, distance, description, category, link } = Object.fromEntries(formData.entries());
     const item = RestaurantItem({
       name,
       distance,
       description,
-      icon: RestaurantIcon({ src: `images/category-${category}.png`, alt: category })
+      icon: RestaurantIcon({ src: `images/category-${category}.png`, alt: category }),
+      link,
+      category
     });
 
     document.querySelector('.restaurant-list')?.appendChild(item);
