@@ -34,7 +34,7 @@ function Tab() {
   });
 
   requestAnimationFrame(setInitialIndicatorPosition);
-  renderRestaurantList(); // 초기 리스트 렌더링
+  renderRestaurantList();
 
   return tabContainer;
 }

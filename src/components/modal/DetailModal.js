@@ -16,7 +16,7 @@ function DetailModal({ id, name, distance, description, link, icon }) {
         className: 'restaurant__name text-subtitle',
         textContent: name
       }),
-      FavoriteButton({ id, name }),
+      FavoriteButton({ id }),
       createDOMElement({
         tag: 'span',
         className: 'restaurant__distance text-body',

@@ -58,7 +58,7 @@ const renderModal = () => {
       id: `restaurant-${Date.now()}`
     });
 
-    document.querySelector('.restaurant-list')?.appendChild(item);
+    $('.restaurant-list')?.appendChild(item);
 
     form.reset();
   };
