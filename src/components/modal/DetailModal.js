@@ -1,12 +1,12 @@
 import ActionButton from '../button/ActionButton.js';
 import CTAButton from '../button/CTAButton.js';
-import Modal from '../Modal.js';
 import createDOMElement from '../../util/createDomElement.js';
-
+import Modal from '../Modal.js';
+// import { toggleFavoriteIcon } from '../restaurant/RestaurantItem.js';
 function DetailModal({ name, distance, description, link, icon }) {
   return createDOMElement({
     tag: 'div',
-    className: 'modal-container',
+    className: 'modal-container detail-modal',
     children: [
       icon,
       createDOMElement({
@@ -22,8 +22,8 @@ function DetailModal({ name, distance, description, link, icon }) {
             tag: 'img',
             className: 'favorite-icon',
             src: 'images/favorite-icon-lined.png',
-            alt: '즐겨찾기',
-            onClick: toggleFavoriteIcon
+            alt: '즐겨찾기'
+            // onClick: toggleFavoriteIcon
           })
         ]
       }),
@@ -45,16 +45,19 @@ function DetailModal({ name, distance, description, link, icon }) {
         target: '_blank'
       }),
       createDOMElement({
+        tag: 'div'
+      }),
+      createDOMElement({
         tag: 'div',
         className: 'button-container',
         children: [
           ActionButton({
             text: '삭제하기',
             onClick: () => {
-              modal.close();
+              Modal.close();
             }
           }),
-          CTAButton({ text: '닫기', onClick: () => modal.close() })
+          CTAButton({ text: '닫기', onClick: () => Modal.close() })
         ]
       })
     ]
@@ -62,10 +65,3 @@ function DetailModal({ name, distance, description, link, icon }) {
 }
 
 export default DetailModal;
-
-function toggleFavoriteIcon(event) {
-  event.stopPropagation();
-  const icon = event.target;
-  const isFavorite = icon.src.includes('favorite-icon-filled.png');
-  icon.src = isFavorite ? 'images/favorite-icon-lined.png' : 'images/favorite-icon-filled.png';
-}

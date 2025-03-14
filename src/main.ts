@@ -8,6 +8,7 @@ import { $ } from './util/selector.js';
 import DropdownContainer, { filterAndSortRestaurants } from './components/dropdown/DropdownContainer.js';
 import Tab from './components/tab/Tab.js';
 import modalInstance from '../src/components/Modal.js';
+
 addEventListener('load', () => {
   renderHeader();
   renderTab();
@@ -28,10 +29,11 @@ const renderTab = () => {
 
   main.prepend(Tab());
 };
-const renderRestaurantList = () => {
+const renderRestaurantList = async () => {
   const main = $('main');
+  const restaurants = await filterAndSortRestaurants();
 
-  main.appendChild(RestaurantList({ restaurants: filterAndSortRestaurants() }));
+  main.appendChild(RestaurantList({ restaurants }));
 };
 
 const renderFilter = (): void => {

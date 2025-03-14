@@ -1,15 +1,24 @@
 import createDOMElement from '../../util/createDomElement.js';
 import DetailModal from '../modal/DetailModal.js';
 import Modal from '../Modal.js';
-function RestaurantItem({ name, distance, description, icon, link, category }) {
+// import { updateFavoriteStatus } from '../../favorite.ts';
+function RestaurantItem({ name, distance, description, icon, link, category, isFavorite = false }) {
+  const FavoriteIcon = createDOMElement({
+    tag: 'img',
+    className: 'favorite-icon',
+    src: isFavorite ? 'images/favorite-icon-filled.png' : 'images/favorite-icon-lined.png', // ✅ 초기 상태 반영
+    alt: '즐겨찾기'
+    // onClick: (event) => toggleFavoriteIcon(event, name, FavoriteIcon) // ✅ 아이콘 상태 업데이트
+  });
+
   return createDOMElement({
     tag: 'li',
     className: 'restaurant',
     children: [
       createDOMElement({
         tag: 'div',
-        className: 'restaurant__category',
-        children: [icon]
+        className: 'restaurant__category'
+        // children: [icon]
       }),
       createDOMElement({
         tag: 'div',
@@ -20,19 +29,10 @@ function RestaurantItem({ name, distance, description, icon, link, category }) {
             className: 'restaurant__name text-subtitle',
             textContent: name
           }),
-
           createDOMElement({
-            tag: 'button-container',
-            className: 'restaurant__star',
-            children: [
-              createDOMElement({
-                tag: 'img',
-                className: 'favorite-icon',
-                src: 'images/favorite-icon-lined.png',
-                alt: '즐겨찾기',
-                onClick: toggleFavoriteIcon
-              })
-            ]
+            tag: 'div',
+            className: 'restaurant__star'
+            // children: [FavoriteIcon] // ✅ 버튼이 아닌 이미지 자체를 추가
           }),
           createDOMElement({
             tag: 'span',
@@ -55,9 +55,10 @@ function RestaurantItem({ name, distance, description, icon, link, category }) {
 
 export default RestaurantItem;
 
-function toggleFavoriteIcon(event) {
-  event.stopPropagation();
-  const icon = event.target;
-  const isFavorite = icon.src.includes('favorite-icon-filled.png');
-  icon.src = isFavorite ? 'images/favorite-icon-lined.png' : 'images/favorite-icon-filled.png';
-}
+// // ✅ 즐겨찾기 토글 함수 (비동기 처리)
+// export async function toggleFavoriteIcon(event, restaurantName, imgElement) {
+//   event.stopPropagation(); // 모달이 열리지 않도록 이벤트 전파 방지
+
+//   const isFavorite = await updateFavoriteStatus(restaurantName);
+//   imgElement.src = isFavorite ? 'images/favorite-icon-filled.png' : 'images/favorite-icon-lined.png';
+// }
