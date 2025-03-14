@@ -19,6 +19,7 @@ interface Restaurant {
 async function loadInitialRestaurants(): Promise<Restaurant[]> {
   try {
     const response = await fetch(DATA_URL);
+    console.log(response);
     if (!response.ok) throw new Error('네트워크 오류 발생');
     return await response.json();
   } catch (error) {
@@ -70,6 +71,7 @@ export async function updateFavoriteStatus(id: number): Promise<boolean> {
 
   return !isFavorite;
 }
+
 export async function removeRestaurant(id: number) {
   let allRestaurants = await getAllRestaurants();
   allRestaurants = allRestaurants.filter((restaurant) => restaurant.id !== id);
@@ -79,7 +81,6 @@ export async function removeRestaurant(id: number) {
   favoriteRestaurants = favoriteRestaurants.filter((restaurant) => restaurant.id !== id);
   localStorage.setItem('favoriteRestaurants', JSON.stringify(favoriteRestaurants));
 
-  // ✅ 특정 음식점 요소만 삭제 (전체 리스트 리렌더링 X)
   const restaurantItem = document.querySelector(`.restaurant[data-id="${id}"]`);
   if (restaurantItem) {
     restaurantItem.remove();

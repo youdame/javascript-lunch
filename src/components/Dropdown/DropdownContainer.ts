@@ -4,7 +4,7 @@ import CategoryDropdown from './CategoryDropdown.js';
 import SortingDropdown from './SortingDropdown.js';
 import RestaurantList from '../restaurant/RestaurantList.js';
 import { CategoryOption, SortOption } from './type.ts';
-import { getAllRestaurants } from '../../favorite.ts';
+import { getAllRestaurants, getFavoriteRestaurants } from '../../favorite.ts';
 
 function DropdownContainer() {
   return createDOMElement({
@@ -43,9 +43,11 @@ export const filterAndSortRestaurants = async (category?: CategoryOption, sortBy
   const selectedCategory = category || '전체';
   const selectedSortBy = sortBy || '이름순';
 
-  const allRestaurants = await getAllRestaurants();
+  // 현재 선택된 탭 확인 (전체 / 즐겨찾기)
+  const isFavoriteTab = $('.favorite-restaurant-tab')?.classList.contains('active-tab');
+  const restaurants = isFavoriteTab ? await getFavoriteRestaurants() : await getAllRestaurants();
 
-  const filteredRestaurants = allRestaurants
+  const filteredRestaurants = restaurants
     .filter((restaurant) => selectedCategory === '전체' || restaurant.category === selectedCategory)
     .sort((a, b) => (selectedSortBy === '이름순' ? a.name.localeCompare(b.name) : a.distance - b.distance));
 
