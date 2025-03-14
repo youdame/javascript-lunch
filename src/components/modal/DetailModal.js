@@ -2,8 +2,9 @@ import ActionButton from '../button/ActionButton.js';
 import CTAButton from '../button/CTAButton.js';
 import createDOMElement from '../../util/createDomElement.js';
 import Modal from '../Modal.js';
-// import { toggleFavoriteIcon } from '../restaurant/RestaurantItem.js';
-function DetailModal({ name, distance, description, link, icon }) {
+import FavoriteButton from '../button/FavoriteButton.js';
+
+function DetailModal({ name, distance, description, link, icon, isFavorite }) {
   return createDOMElement({
     tag: 'div',
     className: 'modal-container detail-modal',
@@ -14,19 +15,7 @@ function DetailModal({ name, distance, description, link, icon }) {
         className: 'restaurant__name text-subtitle',
         textContent: name
       }),
-      createDOMElement({
-        tag: 'button-container',
-        className: 'star',
-        children: [
-          createDOMElement({
-            tag: 'img',
-            className: 'favorite-icon',
-            src: 'images/favorite-icon-lined.png',
-            alt: '즐겨찾기'
-            // onClick: toggleFavoriteIcon
-          })
-        ]
-      }),
+      FavoriteButton(name, isFavorite),
       createDOMElement({
         tag: 'span',
         className: 'restaurant__distance text-body',
