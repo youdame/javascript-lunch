@@ -10,8 +10,8 @@ function DetailModal({ name, distance, description, link, icon }) {
     children: [
       icon,
       createDOMElement({
-        tag: 'h2',
-        className: 'subtitle',
+        tag: 'h3',
+        className: 'restaurant__name text-subtitle',
         textContent: name
       }),
       createDOMElement({
@@ -34,7 +34,7 @@ function DetailModal({ name, distance, description, link, icon }) {
       }),
       createDOMElement({
         tag: 'p',
-        className: 'restaurant__description text-body',
+        className: 'text-body',
         textContent: description
       }),
       createDOMElement({

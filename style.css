@@ -153,6 +153,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
+  flex-grow: 1;
 }
 
 .restaurant__name {
@@ -362,4 +364,8 @@ input[name='link'] {
   position: absolute;
   right: 16px;
   top: 32px;
+}
+.restaurant__star {
+  position: absolute;
+  right: 16px;
 }

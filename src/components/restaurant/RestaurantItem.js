@@ -20,6 +20,20 @@ function RestaurantItem({ name, distance, description, icon, link, category }) {
             className: 'restaurant__name text-subtitle',
             textContent: name
           }),
+
+          createDOMElement({
+            tag: 'button-container',
+            className: 'restaurant__star',
+            children: [
+              createDOMElement({
+                tag: 'img',
+                className: 'favorite-icon',
+                src: 'images/favorite-icon-lined.png',
+                alt: '즐겨찾기',
+                onClick: toggleFavoriteIcon
+              })
+            ]
+          }),
           createDOMElement({
             tag: 'span',
             className: 'restaurant__distance text-body',
@@ -40,3 +54,10 @@ function RestaurantItem({ name, distance, description, icon, link, category }) {
 }
 
 export default RestaurantItem;
+
+function toggleFavoriteIcon(event) {
+  event.stopPropagation();
+  const icon = event.target;
+  const isFavorite = icon.src.includes('favorite-icon-filled.png');
+  icon.src = isFavorite ? 'images/favorite-icon-lined.png' : 'images/favorite-icon-filled.png';
+}
