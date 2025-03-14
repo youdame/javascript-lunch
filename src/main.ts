@@ -6,7 +6,6 @@ import { $ } from './util/selector.js';
 import DropdownContainer, { filterAndSortRestaurants } from './components/dropdown/DropdownContainer.js';
 import Tab from './components/tab/Tab.js';
 import modalInstance from '../src/components/Modal.js';
-import RestaurantItem from './components/restaurant/RestaurantItem.js';
 import { addRestaurant } from './service/restaurantService.js';
 
 addEventListener('load', () => {
@@ -31,9 +30,16 @@ const renderTab = () => {
 
 const renderRestaurantList = async () => {
   const main = $('main');
-  const restaurants = await filterAndSortRestaurants();
+  const restaurantListContainer = $('.restaurant-list-container');
 
-  main.appendChild(RestaurantList({ restaurants }));
+  if (restaurantListContainer) {
+    restaurantListContainer.remove();
+  }
+
+  const restaurants = await filterAndSortRestaurants();
+  const newList = RestaurantList({ restaurants });
+
+  main.appendChild(newList);
 };
 
 const renderFilter = (): void => {
@@ -63,7 +69,9 @@ const renderModal = () => {
     };
 
     await addRestaurant(newRestaurant);
-    $('.restaurant-list')?.appendChild(RestaurantItem(newRestaurant));
+
+    await renderRestaurantList();
+
     form.reset();
   };
 
