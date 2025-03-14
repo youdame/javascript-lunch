@@ -3,6 +3,7 @@ import CTAButton from '../button/CTAButton.js';
 import createDOMElement from '../../util/createDomElement.js';
 import Modal from '../Modal.js';
 import FavoriteButton from '../button/FavoriteButton.js';
+import { removeRestaurant } from '../../favorite.ts';
 
 function DetailModal({ id, name, distance, description, link, icon }) {
   return createDOMElement({
@@ -43,6 +44,7 @@ function DetailModal({ id, name, distance, description, link, icon }) {
           ActionButton({
             text: '삭제하기',
             onClick: () => {
+              removeRestaurant(id);
               Modal.close();
             }
           }),

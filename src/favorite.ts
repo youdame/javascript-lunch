@@ -2,8 +2,8 @@ const FAVORITE_KEY = 'favoriteRestaurants';
 const DATA_URL = '/data/restaurants.json';
 const RESTAURANT_KEY = 'restaurantData';
 
-// ✅ 음식점 데이터 타입 정의
 interface Restaurant {
+  id: number;
   name: string;
   distance: number;
   description: string;
@@ -16,7 +16,6 @@ interface Restaurant {
   isFavorite: boolean;
 }
 
-// ✅ JSON에서 초기 데이터를 가져오는 함수
 async function loadInitialRestaurants(): Promise<Restaurant[]> {
   try {
     const response = await fetch(DATA_URL);
@@ -43,33 +42,46 @@ export async function getAllRestaurants(): Promise<Restaurant[]> {
   }
 }
 
-// ✅ JSON에서 초기 즐겨찾기 데이터를 가져오는 함수
-async function loadInitialFavorites(): Promise<string[]> {
-  const restaurants = await loadInitialRestaurants();
-  return restaurants.filter((restaurant) => restaurant.isFavorite).map((restaurant) => restaurant.name);
-}
-
-// ✅ 로컬스토리지에서 즐겨찾기 목록 가져오기 (없으면 JSON 초기값 반영)
-export async function getFavoriteRestaurants(): Promise<string[]> {
+export async function getFavoriteRestaurants(): Promise<Restaurant[]> {
   const storedFavorites = localStorage.getItem(FAVORITE_KEY);
-  if (storedFavorites) return JSON.parse(storedFavorites);
+  if (!storedFavorites) return [];
 
-  const initialFavorites = await loadInitialFavorites();
-  localStorage.setItem(FAVORITE_KEY, JSON.stringify(initialFavorites));
-  return initialFavorites;
+  const favoriteIds: number[] = JSON.parse(storedFavorites) || [];
+  const allRestaurants = await getAllRestaurants();
+
+  return allRestaurants.filter((restaurant) => favoriteIds.includes(restaurant.id));
 }
 
-// ✅ 음식점이 즐겨찾기에 있는지 확인하는 함수
-export async function isRestaurantFavorite(name: string): Promise<boolean> {
+export async function isRestaurantFavorite(id: number): Promise<boolean> {
   const favorites = await getFavoriteRestaurants();
-  return favorites.includes(name);
+  return favorites.some((restaurant) => restaurant.id === id);
 }
 
-// ✅ 즐겨찾기 상태를 토글하는 함수
-export async function updateFavoriteStatus(name: string): Promise<boolean> {
-  const favorites = await getFavoriteRestaurants();
-  const updatedFavorites = favorites.includes(name) ? favorites.filter((fav) => fav !== name) : [...favorites, name];
+export async function updateFavoriteStatus(id: number): Promise<boolean> {
+  const storedFavorites: number[] = JSON.parse(localStorage.getItem(FAVORITE_KEY) || '[]');
+
+  const isFavorite = storedFavorites.includes(id);
+
+  const updatedFavorites: number[] = isFavorite
+    ? storedFavorites.filter((favId: number) => favId !== id)
+    : [...storedFavorites, id];
 
   localStorage.setItem(FAVORITE_KEY, JSON.stringify(updatedFavorites));
-  return updatedFavorites.includes(name);
+
+  return !isFavorite;
+}
+export async function removeRestaurant(id: number) {
+  let allRestaurants = await getAllRestaurants();
+  allRestaurants = allRestaurants.filter((restaurant) => restaurant.id !== id);
+  localStorage.setItem('restaurantData', JSON.stringify(allRestaurants));
+
+  let favoriteRestaurants = await getFavoriteRestaurants();
+  favoriteRestaurants = favoriteRestaurants.filter((restaurant) => restaurant.id !== id);
+  localStorage.setItem('favoriteRestaurants', JSON.stringify(favoriteRestaurants));
+
+  // ✅ 특정 음식점 요소만 삭제 (전체 리스트 리렌더링 X)
+  const restaurantItem = document.querySelector(`.restaurant[data-id="${id}"]`);
+  if (restaurantItem) {
+    restaurantItem.remove();
+  }
 }

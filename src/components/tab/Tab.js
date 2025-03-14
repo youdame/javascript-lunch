@@ -1,5 +1,7 @@
 import createDOMElement from '../../util/createDomElement.js';
 import { $ } from '../../util/selector.js';
+import { getAllRestaurants, getFavoriteRestaurants } from '../../favorite.ts';
+import RestaurantList from '../restaurant/RestaurantList.js';
 
 function Tab() {
   const tabContainer = createDOMElement({
@@ -32,13 +34,14 @@ function Tab() {
   });
 
   requestAnimationFrame(setInitialIndicatorPosition);
+  renderRestaurantList(); // 초기 리스트 렌더링
 
   return tabContainer;
 }
 
 export default Tab;
 
-function toggleRestaurantTab(event) {
+async function toggleRestaurantTab(event) {
   const allTab = $('.all-restaurant-tab');
   const favoriteTab = $('.favorite-restaurant-tab');
 
@@ -46,8 +49,10 @@ function toggleRestaurantTab(event) {
   favoriteTab.classList.remove('active-tab');
 
   event.target.classList.add('active-tab');
-
   updateIndicatorPosition(event.target);
+
+  const isFavoriteTab = event.target.classList.contains('favorite-restaurant-tab');
+  await renderRestaurantList(isFavoriteTab);
 }
 
 function setInitialIndicatorPosition() {
@@ -64,4 +69,18 @@ function updateIndicatorPosition(targetTab) {
 
   indicator.style.width = `${tabRect.width}px`;
   indicator.style.transform = `translateX(${tabRect.left - tabListRect.left}px)`;
+}
+
+async function renderRestaurantList(showFavorites = false) {
+  const restaurantListContainer = $('.restaurant-list-container');
+  if (!restaurantListContainer) {
+    return;
+  }
+
+  restaurantListContainer.innerHTML = '';
+
+  const restaurants = showFavorites ? await getFavoriteRestaurants() : await getAllRestaurants();
+
+  const newList = RestaurantList({ restaurants });
+  restaurantListContainer.appendChild(newList);
 }
