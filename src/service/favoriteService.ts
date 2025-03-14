@@ -1,8 +1,7 @@
 import { getLocalStorage, setLocalStorage } from '../util/localStorage';
 import { getAllRestaurants } from './restaurantService';
 import { Restaurant } from '../type';
-
-const FAVORITE_KEY = 'favoriteRestaurants';
+import { FAVORITE_KEY } from '../components/constant/localStorage';
 
 export async function getFavoriteRestaurants(): Promise<Restaurant[]> {
   const favoriteIds = getLocalStorage<number[]>(FAVORITE_KEY, []);

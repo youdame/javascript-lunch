@@ -6,9 +6,8 @@ import { $ } from './util/selector.js';
 import DropdownContainer, { filterAndSortRestaurants } from './components/dropdown/DropdownContainer.js';
 import Tab from './components/tab/Tab.js';
 import modalInstance from '../src/components/Modal.js';
-
 import RestaurantItem from './components/restaurant/RestaurantItem.js';
-import { Restaurant } from './type.js';
+import { addRestaurant } from './service/restaurantService.js';
 
 addEventListener('load', () => {
   renderHeader();
@@ -63,7 +62,7 @@ const renderModal = () => {
       isFavorite: false
     };
 
-    await addRestaurantToLocalStorage(newRestaurant);
+    await addRestaurant(newRestaurant);
     $('.restaurant-list')?.appendChild(RestaurantItem(newRestaurant));
     form.reset();
   };
@@ -71,16 +70,3 @@ const renderModal = () => {
   const plusButton = $('.gnb__button');
   plusButton.addEventListener('click', () => modalInstance.open(RestaurantAddModal({ onSubmit: handleSubmit })));
 };
-
-export async function addRestaurantToLocalStorage(newRestaurant: Restaurant): Promise<void> {
-  try {
-    const storedRestaurants: Restaurant[] = JSON.parse(localStorage.getItem('restaurantData') || '[]');
-
-    storedRestaurants.push(newRestaurant);
-    localStorage.setItem('restaurantData', JSON.stringify(storedRestaurants));
-
-    console.log(`✅ ${newRestaurant.name}이(가) 로컬스토리지에 추가되었습니다.`);
-  } catch (error) {
-    console.error('❌ 음식점 추가 중 오류 발생:', error);
-  }
-}
