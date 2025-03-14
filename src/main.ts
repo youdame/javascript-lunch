@@ -13,7 +13,6 @@ addEventListener('load', () => {
   renderHeader();
   renderTab();
   renderFilter();
-
   renderRestaurantList();
   renderModal();
 });
@@ -29,6 +28,7 @@ const renderTab = () => {
 
   main.prepend(Tab());
 };
+
 const renderRestaurantList = async () => {
   const main = $('main');
   const restaurants = await filterAndSortRestaurants();

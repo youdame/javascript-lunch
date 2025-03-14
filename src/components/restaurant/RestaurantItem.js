@@ -3,7 +3,7 @@ import DetailModal from '../modal/DetailModal.js';
 import Modal from '../Modal.js';
 import FavoriteButton from '../button/FavoriteButton.js';
 
-function RestaurantItem({ name, distance, description, icon, link, category, isFavorite = false }) {
+function RestaurantItem({ name, distance, description, icon, link, category }) {
   return createDOMElement({
     tag: 'li',
     className: 'restaurant',
@@ -25,7 +25,7 @@ function RestaurantItem({ name, distance, description, icon, link, category, isF
           createDOMElement({
             tag: 'div',
             className: 'restaurant__star',
-            children: [FavoriteButton(name, isFavorite)]
+            children: [FavoriteButton({ name })]
           }),
           createDOMElement({
             tag: 'span',
@@ -41,7 +41,7 @@ function RestaurantItem({ name, distance, description, icon, link, category, isF
       })
     ],
     onClick: () => {
-      Modal.open(DetailModal({ name, distance, description, link, icon, isFavorite }));
+      Modal.open(DetailModal({ name, distance, description, link, icon }));
     }
   });
 }
