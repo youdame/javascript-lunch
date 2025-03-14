@@ -7,7 +7,7 @@ import RestaurantList from './components/restaurant/RestaurantList.js';
 import { $ } from './util/selector.js';
 import DropdownContainer, { filterAndSortRestaurants } from './components/dropdown/DropdownContainer.js';
 import Tab from './components/tab/Tab.js';
-
+import modalInstance from '../src/components/Modal.js';
 addEventListener('load', () => {
   renderHeader();
   renderTab();
@@ -40,8 +40,6 @@ const renderFilter = (): void => {
 };
 
 const renderModal = () => {
-  const main = $('main');
-
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
 
@@ -61,10 +59,7 @@ const renderModal = () => {
 
     form.reset();
   };
-  const modal = RestaurantAddModal({ onSubmit: handleSubmit });
-
-  main.appendChild(modal.modal);
 
   const plusButton = $('.gnb__button');
-  plusButton.addEventListener('click', () => modal.open());
+  plusButton.addEventListener('click', () => modalInstance.open(RestaurantAddModal({ onSubmit: handleSubmit })));
 };
