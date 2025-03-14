@@ -1,4 +1,4 @@
-import { updateFavoriteStatus, isRestaurantFavorite } from '../../favorite.ts';
+import { isRestaurantFavorite, updateFavoriteStatus } from '../../service/favoriteService.ts';
 import createDOMElement from '../../util/createDomElement.js';
 import { $, $all } from '../../util/selector.js';
 

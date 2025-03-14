@@ -3,7 +3,7 @@ import CTAButton from '../button/CTAButton.js';
 import createDOMElement from '../../util/createDomElement.js';
 import Modal from '../Modal.js';
 import FavoriteButton from '../button/FavoriteButton.js';
-import { removeRestaurant } from '../../favorite.ts';
+import { removeRestaurant } from '../../service/restaurantService.ts';
 
 function DetailModal({ id, name, distance, description, link, icon }) {
   return createDOMElement({

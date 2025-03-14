@@ -1,6 +1,8 @@
+import { getFavoriteRestaurants } from '../../service/favoriteService.ts';
+import { getAllRestaurants } from '../../service/restaurantService.ts';
 import createDOMElement from '../../util/createDomElement.js';
 import { $ } from '../../util/selector.js';
-import { getAllRestaurants, getFavoriteRestaurants } from '../../favorite.ts';
+
 import RestaurantList from '../restaurant/RestaurantList.js';
 
 function Tab() {

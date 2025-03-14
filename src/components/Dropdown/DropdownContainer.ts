@@ -4,7 +4,8 @@ import CategoryDropdown from './CategoryDropdown.js';
 import SortingDropdown from './SortingDropdown.js';
 import RestaurantList from '../restaurant/RestaurantList.js';
 import { CategoryOption, SortOption } from './type.ts';
-import { getAllRestaurants, getFavoriteRestaurants } from '../../favorite.ts';
+import { getFavoriteRestaurants } from '../../service/favoriteService.ts';
+import { getAllRestaurants } from '../../service/restaurantService.ts';
 
 function DropdownContainer() {
   return createDOMElement({
@@ -27,13 +28,13 @@ function DropdownContainer() {
   });
 }
 
-const handleCategoryChange = (category: CategoryOption = '전체'): void => {
+const handleCategoryChange = (category: CategoryOption = '전체') => {
   const sortingSelect = $('#sorting-filter') as HTMLSelectElement;
   const sortBy = sortingSelect?.value || '이름순';
   filterAndSortRestaurants(category, sortBy);
 };
 
-const handleSortingChange = (sortBy: SortOption = '이름순'): void => {
+const handleSortingChange = (sortBy: SortOption = '이름순') => {
   const categorySelect = $('#category-filter') as HTMLSelectElement;
   const category = categorySelect?.value || '전체';
   filterAndSortRestaurants(category, sortBy);
@@ -43,7 +44,6 @@ export const filterAndSortRestaurants = async (category?: CategoryOption, sortBy
   const selectedCategory = category || '전체';
   const selectedSortBy = sortBy || '이름순';
 
-  // 현재 선택된 탭 확인 (전체 / 즐겨찾기)
   const isFavoriteTab = $('.favorite-restaurant-tab')?.classList.contains('active-tab');
   const restaurants = isFavoriteTab ? await getFavoriteRestaurants() : await getAllRestaurants();
 

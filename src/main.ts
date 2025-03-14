@@ -6,8 +6,9 @@ import { $ } from './util/selector.js';
 import DropdownContainer, { filterAndSortRestaurants } from './components/dropdown/DropdownContainer.js';
 import Tab from './components/tab/Tab.js';
 import modalInstance from '../src/components/Modal.js';
-import { Restaurant } from './components/dropdown/type.js';
+
 import RestaurantItem from './components/restaurant/RestaurantItem.js';
+import { Restaurant } from './type.js';
 
 addEventListener('load', () => {
   renderHeader();
@@ -49,7 +50,7 @@ const renderModal = () => {
     const formData = new FormData(form);
 
     const newRestaurant = {
-      id: `restaurant-${Date.now()}`,
+      id: Date.now(),
       name: String(formData.get('name')),
       distance: Number(formData.get('distance')),
       description: String(formData.get('description')),
