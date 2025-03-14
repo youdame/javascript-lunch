@@ -9,6 +9,10 @@ const createDOMElement = ({ tag, children, ...props }) => {
     if (key.startsWith('on') && typeof value === 'function') {
       const eventName = key.slice(2).toLowerCase();
       element.addEventListener(eventName, value);
+    } else if (key === 'attributes' && typeof value === 'object') {
+      Object.entries(value).forEach(([attrName, attrValue]) => {
+        element.setAttribute(attrName, attrValue);
+      });
     } else {
       element[key] = value;
     }

@@ -3,10 +3,11 @@ import DetailModal from '../modal/DetailModal.js';
 import Modal from '../Modal.js';
 import FavoriteButton from '../button/FavoriteButton.js';
 
-function RestaurantItem({ name, distance, description, icon, link, category }) {
+function RestaurantItem({ id, name, distance, description, icon, link, category }) {
   return createDOMElement({
     tag: 'li',
     className: 'restaurant',
+    attributes: { 'data-id': id },
     children: [
       createDOMElement({
         tag: 'div',
@@ -25,7 +26,7 @@ function RestaurantItem({ name, distance, description, icon, link, category }) {
           createDOMElement({
             tag: 'div',
             className: 'restaurant__star',
-            children: [FavoriteButton({ name })]
+            children: [FavoriteButton({ id })]
           }),
           createDOMElement({
             tag: 'span',
@@ -41,7 +42,7 @@ function RestaurantItem({ name, distance, description, icon, link, category }) {
       })
     ],
     onClick: () => {
-      Modal.open(DetailModal({ name, distance, description, link, icon }));
+      Modal.open(DetailModal({ id, name, distance, description, link, icon }));
     }
   });
 }

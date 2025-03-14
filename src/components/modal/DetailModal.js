@@ -4,7 +4,7 @@ import createDOMElement from '../../util/createDomElement.js';
 import Modal from '../Modal.js';
 import FavoriteButton from '../button/FavoriteButton.js';
 
-function DetailModal({ name, distance, description, link, icon }) {
+function DetailModal({ id, name, distance, description, link, icon }) {
   return createDOMElement({
     tag: 'div',
     className: 'modal-container detail-modal',
@@ -15,7 +15,7 @@ function DetailModal({ name, distance, description, link, icon }) {
         className: 'restaurant__name text-subtitle',
         textContent: name
       }),
-      FavoriteButton({ name }),
+      FavoriteButton({ id, name }),
       createDOMElement({
         tag: 'span',
         className: 'restaurant__distance text-body',

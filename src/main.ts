@@ -54,7 +54,8 @@ const renderModal = () => {
       description,
       icon: RestaurantIcon({ src: `images/category-${category}.png`, alt: category }),
       link,
-      category
+      category,
+      id: `restaurant-${Date.now()}`
     });
 
     document.querySelector('.restaurant-list')?.appendChild(item);
