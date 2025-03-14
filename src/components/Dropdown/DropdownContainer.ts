@@ -4,7 +4,7 @@ import CategoryDropdown from './CategoryDropdown.js';
 import SortingDropdown from './SortingDropdown.js';
 import restaurantsData from '../../../public/data/restaurants.json';
 import RestaurantList from '../restaurant/RestaurantList.js';
-import { CategoryOption, SortOption } from './type.js';
+import { CategoryOption, SortOption } from './type.ts';
 
 function DropdownContainer() {
   return createDOMElement({

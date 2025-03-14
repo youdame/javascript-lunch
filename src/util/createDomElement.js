@@ -10,7 +10,6 @@ const createDOMElement = ({ tag, children, ...props }) => {
       const eventName = key.slice(2).toLowerCase();
       element.addEventListener(eventName, value);
     } else {
-      // ✅ 일반 속성 등록
       element[key] = value;
     }
   });

@@ -204,6 +204,11 @@ body {
   background: var(--grey-100);
 }
 
+.detail-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 .modal-title {
   margin-bottom: 36px;
 }
@@ -351,4 +356,10 @@ input[name='link'] {
   height: 2px;
   background-color: var(--primary-color);
   transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.star {
+  position: absolute;
+  right: 16px;
+  top: 32px;
 }
