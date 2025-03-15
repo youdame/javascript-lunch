@@ -1,5 +1,5 @@
 import createDOMElement from '../../util/createDomElement.js';
-import modalInstance from '../Modal.js'; // ✅ 하나의 모달 인스턴스를 재사용
+import modalInstance from '../Modal.js';
 import RestaurantAddModalForm from './RestaurantAddModalForm.js';
 
 function RestaurantAddModal({ onSubmit }) {

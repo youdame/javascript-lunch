@@ -7,6 +7,7 @@ import DropdownContainer, { filterAndSortRestaurants } from './components/dropdo
 import Tab from './components/tab/Tab.js';
 import modalInstance from '../src/components/Modal.js';
 import { addRestaurant } from './service/restaurantService.js';
+import { Category } from './type.js';
 
 addEventListener('load', () => {
   renderHeader();
@@ -59,7 +60,7 @@ const renderModal = () => {
       name: String(formData.get('name')),
       distance: Number(formData.get('distance')),
       description: String(formData.get('description')),
-      category: String(formData.get('category')),
+      category: String(formData.get('category')) as Category,
       link: String(formData.get('link')),
       icon: {
         src: `images/category-${String(formData.get('category'))}.png`,
