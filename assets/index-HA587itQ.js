@@ -339,7 +339,7 @@ function removeItemFromLocalStorage(key, filterFn) {
 }
 const FAVORITE_KEY = "favoriteRestaurants";
 const RESTAURANT_KEY = "restaurantData";
-const DATA_URL = "/data/restaurants.json";
+const DATA_URL = "data/restaurants.json";
 async function loadInitialRestaurants() {
   try {
     const response = await fetch(DATA_URL);
