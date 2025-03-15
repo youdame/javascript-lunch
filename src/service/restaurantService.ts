@@ -1,7 +1,7 @@
 import { getLocalStorage, setLocalStorage, removeItemFromLocalStorage } from '../util/localStorage';
 import { Restaurant } from '../type';
 import { FAVORITE_KEY, RESTAURANT_KEY } from '../components/constant/localStorage';
-const DATA_URL = '/data/restaurants.json';
+const DATA_URL = 'data/restaurants.json';
 
 async function loadInitialRestaurants(): Promise<Restaurant[]> {
   try {

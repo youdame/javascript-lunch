@@ -4,8 +4,8 @@ export interface Restaurant {
   distance: number;
   description: string;
   category: Category;
-  link: string;
-  icon: {
+  link?: string;
+  icon?: {
     src: string;
     alt: string;
   };
