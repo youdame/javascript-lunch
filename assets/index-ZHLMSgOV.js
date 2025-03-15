@@ -325,60 +325,66 @@ function RestaurantIcon({ src, alt }) {
     className: "category-icon"
   });
 }
+function getLocalStorage(key, defaultValue) {
+  const storedData = localStorage.getItem(key);
+  return storedData ? JSON.parse(storedData) : defaultValue;
+}
+function setLocalStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+function removeItemFromLocalStorage(key, filterFn) {
+  const storedData = getLocalStorage(key, []);
+  const updatedData = storedData.filter(filterFn);
+  setLocalStorage(key, updatedData);
+}
 const FAVORITE_KEY = "favoriteRestaurants";
-const DATA_URL = "/data/restaurants.json";
 const RESTAURANT_KEY = "restaurantData";
+const DATA_URL = "/data/restaurants.json";
 async function loadInitialRestaurants() {
   try {
     const response = await fetch(DATA_URL);
     if (!response.ok) throw new Error("네트워크 오류 발생");
     return await response.json();
   } catch (error) {
-    console.error("초기 음식점 데이터를 불러오는 데 실패했습니다:", error);
+    console.error("❌ 초기 음식점 데이터를 불러오는 데 실패했습니다:", error);
     return [];
   }
 }
 async function getAllRestaurants() {
-  try {
-    const storedRestaurants = localStorage.getItem(RESTAURANT_KEY);
-    if (storedRestaurants) return JSON.parse(storedRestaurants) || [];
-    const initialRestaurants = await loadInitialRestaurants();
-    localStorage.setItem(RESTAURANT_KEY, JSON.stringify(initialRestaurants));
-    return initialRestaurants;
-  } catch (error) {
-    console.error("음식점 데이터를 불러오는 중 오류 발생:", error);
-    return [];
+  let restaurants = getLocalStorage(RESTAURANT_KEY, []);
+  if (restaurants.length === 0) {
+    restaurants = await loadInitialRestaurants();
+    setLocalStorage(RESTAURANT_KEY, restaurants);
   }
+  return restaurants;
 }
-async function getFavoriteRestaurants() {
-  const storedFavorites = localStorage.getItem(FAVORITE_KEY);
-  if (!storedFavorites) return [];
-  const favoriteIds = JSON.parse(storedFavorites) || [];
-  const allRestaurants = await getAllRestaurants();
-  return allRestaurants.filter((restaurant) => favoriteIds.includes(restaurant.id));
-}
-async function isRestaurantFavorite(id) {
-  const favorites = await getFavoriteRestaurants();
-  return favorites.some((restaurant) => restaurant.id === id);
-}
-async function updateFavoriteStatus(id) {
-  const storedFavorites = JSON.parse(localStorage.getItem(FAVORITE_KEY) || "[]");
-  const isFavorite = storedFavorites.includes(id);
-  const updatedFavorites = isFavorite ? storedFavorites.filter((favId) => favId !== id) : [...storedFavorites, id];
-  localStorage.setItem(FAVORITE_KEY, JSON.stringify(updatedFavorites));
-  return !isFavorite;
+async function addRestaurant(newRestaurant) {
+  const storedRestaurants = await getAllRestaurants();
+  storedRestaurants.push(newRestaurant);
+  setLocalStorage(RESTAURANT_KEY, storedRestaurants);
 }
 async function removeRestaurant(id) {
-  let allRestaurants = await getAllRestaurants();
-  allRestaurants = allRestaurants.filter((restaurant) => restaurant.id !== id);
-  localStorage.setItem("restaurantData", JSON.stringify(allRestaurants));
-  let favoriteRestaurants = await getFavoriteRestaurants();
-  favoriteRestaurants = favoriteRestaurants.filter((restaurant) => restaurant.id !== id);
-  localStorage.setItem("favoriteRestaurants", JSON.stringify(favoriteRestaurants));
+  removeItemFromLocalStorage(RESTAURANT_KEY, (restaurant) => restaurant.id !== id);
+  removeItemFromLocalStorage(FAVORITE_KEY, (favId) => favId !== id);
   const restaurantItem = document.querySelector(`.restaurant[data-id="${id}"]`);
   if (restaurantItem) {
     restaurantItem.remove();
   }
+}
+async function getFavoriteRestaurants() {
+  const favoriteIds = getLocalStorage(FAVORITE_KEY, []);
+  const allRestaurants = await getAllRestaurants();
+  return allRestaurants.filter((restaurant) => favoriteIds.includes(restaurant.id));
+}
+async function isRestaurantFavorite(id) {
+  const favoriteIds = getLocalStorage(FAVORITE_KEY, []);
+  return favoriteIds.includes(id);
+}
+async function updateFavoriteStatus(id) {
+  const favoriteIds = getLocalStorage(FAVORITE_KEY, []);
+  const updatedFavorites = favoriteIds.includes(id) ? favoriteIds.filter((favId) => favId !== id) : [...favoriteIds, id];
+  setLocalStorage(FAVORITE_KEY, updatedFavorites);
+  return updatedFavorites.includes(id);
 }
 const IMAGE_SRC = {
   filled: "images/favorite-icon-filled.png",
@@ -602,10 +608,12 @@ const handleSortingChange = (sortBy = "이름순") => {
   filterAndSortRestaurants(category, sortBy);
 };
 const filterAndSortRestaurants = async (category, sortBy) => {
+  var _a;
   const selectedCategory = category || "전체";
   const selectedSortBy = sortBy || "이름순";
-  const allRestaurants = await getAllRestaurants();
-  const filteredRestaurants = allRestaurants.filter((restaurant) => selectedCategory === "전체" || restaurant.category === selectedCategory).sort((a, b) => selectedSortBy === "이름순" ? a.name.localeCompare(b.name) : a.distance - b.distance);
+  const isFavoriteTab = (_a = $(".favorite-restaurant-tab")) == null ? void 0 : _a.classList.contains("active-tab");
+  const restaurants = isFavoriteTab ? await getFavoriteRestaurants() : await getAllRestaurants();
+  const filteredRestaurants = restaurants.filter((restaurant) => selectedCategory === "전체" || restaurant.category === selectedCategory).sort((a, b) => selectedSortBy === "이름순" ? a.name.localeCompare(b.name) : a.distance - b.distance);
   const restaurantListContainer = $(".restaurant-list-container");
   if (restaurantListContainer) {
     restaurantListContainer.replaceWith(RestaurantList({ restaurants: filteredRestaurants }));
@@ -696,30 +704,38 @@ const renderTab = () => {
 };
 const renderRestaurantList = async () => {
   const main = $("main");
+  const restaurantListContainer = $(".restaurant-list-container");
+  if (restaurantListContainer) {
+    restaurantListContainer.remove();
+  }
   const restaurants = await filterAndSortRestaurants();
-  main.appendChild(RestaurantList({ restaurants }));
+  const newList = RestaurantList({ restaurants });
+  main.appendChild(newList);
 };
 const renderFilter = () => {
   const main = $("main");
   main.appendChild(DropdownContainer());
 };
 const renderModal = () => {
-  const handleSubmit = (e) => {
-    var _a;
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    const { name, distance, description, category, link } = Object.fromEntries(formData.entries());
-    const item = RestaurantItem({
-      name,
-      distance,
-      description,
-      icon: RestaurantIcon({ src: `images/category-${category}.png`, alt: category }),
-      link,
-      category,
-      id: `restaurant-${Date.now()}`
-    });
-    (_a = $(".restaurant-list")) == null ? void 0 : _a.appendChild(item);
+    const newRestaurant = {
+      id: Date.now(),
+      name: String(formData.get("name")),
+      distance: Number(formData.get("distance")),
+      description: String(formData.get("description")),
+      category: String(formData.get("category")),
+      link: String(formData.get("link")),
+      icon: {
+        src: `images/category-${String(formData.get("category"))}.png`,
+        alt: String(formData.get("category"))
+      },
+      isFavorite: false
+    };
+    await addRestaurant(newRestaurant);
+    await renderRestaurantList();
     form.reset();
   };
   const plusButton = $(".gnb__button");

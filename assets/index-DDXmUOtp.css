@@ -183,6 +183,7 @@ body {
 
 .modal--open {
   display: block;
+  height: auto;
 }
 
 .modal-backdrop {
